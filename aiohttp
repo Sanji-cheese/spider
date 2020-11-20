@@ -1,0 +1,26 @@
+# import requests
+import aiohttp
+url = 'https://keras.io/zh/models/model/#fit'
+headers = {
+    'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36 QIHU 360SE'
+}
+# res = requests.get(url, headers=headers)
+# # print(res.text)
+import asyncio
+#
+# async def fetch(session, url):
+#     async with session.get(url, headers=headers) as response:
+#         status = response.status
+#         print('---------', status)
+#         return await response.text()
+
+async def main():
+    async with aiohttp.TCPConnector(limit=30, ssl=False) as tc:
+        async with aiohttp.ClientSession(connector=tc) as session:
+            async with session.get(url, headers=headers) as req:
+                status = req.status
+                print('---------', status)
+                # print(req.text())
+                return await req.text()
+html = asyncio.run(main())
+print(html)
